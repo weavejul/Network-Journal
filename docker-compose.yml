@@ -1,0 +1,104 @@
+services:
+  # Neo4j Database
+  neo4j:
+    image: neo4j:5.15.0
+    container_name: network-journal-neo4j
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt 
+    environment:
+      NEO4J_AUTH: neo4j/password
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/var/lib/neo4j/import
+      - neo4j_plugins:/plugins
+    networks:
+      - network-journal
+
+  # Redis Cache
+  redis:
+    image: redis:7.2-alpine
+    container_name: network-journal-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - network-journal
+
+  # Backend API
+  api:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.api
+    container_name: network-journal-api
+    ports:
+      - "8000:8000"
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - REDIS_URL=redis://redis:6379
+      - DEBUG=true
+    volumes:
+      - ./backend:/app
+      - ./shared:/app/shared
+    depends_on:
+      - neo4j
+      - redis
+    networks:
+      - network-journal
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # AI Service
+  ai_service:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.ai
+    container_name: network-journal-ai
+    environment:
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./backend:/app
+      - ./shared:/app/shared
+    depends_on:
+      - neo4j
+      - redis
+    networks:
+      - network-journal
+
+  # Frontend (Development)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: network-journal-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - api
+    networks:
+      - network-journal
+    command: npm run dev
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_import:
+  neo4j_plugins:
+  redis_data:
+
+networks:
+  network-journal:
+    driver: bridge 

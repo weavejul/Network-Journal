@@ -1,0 +1,13 @@
+# Include the main requirements
+-r ../../requirements.txt
+
+# Additional API-specific dependencies
+fastapi-cors==0.0.6
+slowapi==0.1.9
+fastapi
+neo4j
+pydantic
+pytest
+httpx
+
+# ... existing code ... 

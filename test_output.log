@@ -1,0 +1,234 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.5, pytest-8.4.1, pluggy-1.6.0
+rootdir: /Users/weavejul/Documents/Programs/Network Journal
+plugins: anyio-4.9.0
+collected 55 items
+
+backend/api/tests/test_companies.py ..........                           [ 18%]
+backend/api/tests/test_events.py F.FFFFF                                 [ 30%]
+backend/api/tests/test_interactions.py ..............                    [ 56%]
+backend/api/tests/test_locations.py F.FFFFF                              [ 69%]
+backend/api/tests/test_people.py ..........                              [ 87%]
+backend/api/tests/test_topics.py F.FFFFF                                 [100%]
+
+=================================== FAILURES ===================================
+______________________________ test_create_event _______________________________
+
+    def test_create_event():
+        payload = create_event_payload()
+        response = client.post(API_PREFIX + "/", json=payload)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+backend/api/tests/test_events.py:16: AssertionError
+_______________________________ test_crud_event ________________________________
+
+    def test_crud_event():
+        # Create
+        payload = create_event_payload("CRUD Event")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+backend/api/tests/test_events.py:34: AssertionError
+_______________________________ test_list_events _______________________________
+
+    def test_list_events():
+        # Create an event
+        payload = create_event_payload("List Event")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       event_id = response.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_events.py:58: KeyError
+______________________________ test_search_events ______________________________
+
+    def test_search_events():
+        # Create an event
+        payload = create_event_payload("Searchable Event")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       event_id = response.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_events.py:73: KeyError
+_____________________ test_link_and_unlink_person_to_event _____________________
+
+    def test_link_and_unlink_person_to_event():
+        # Create event
+        event_resp = client.post(API_PREFIX + "/", json=create_event_payload("LinkTest"))
+>       event_id = event_resp.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_events.py:86: KeyError
+_____________________ test_get_upcoming_and_recent_events ______________________
+
+    def test_get_upcoming_and_recent_events():
+        # Create a future event
+        payload = create_event_payload("Future Event", date="2099-01-01T00:00:00Z")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       event_id = response.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_events.py:110: KeyError
+_____________________________ test_create_location _____________________________
+
+    def test_create_location():
+        payload = create_location_payload()
+        response = client.post(API_PREFIX + "/", json=payload)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+backend/api/tests/test_locations.py:16: AssertionError
+______________________________ test_crud_location ______________________________
+
+    def test_crud_location():
+        # Create
+        payload = create_location_payload("CRUD City")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+backend/api/tests/test_locations.py:34: AssertionError
+_____________________________ test_list_locations ______________________________
+
+    def test_list_locations():
+        # Create a location
+        payload = create_location_payload("List City")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       location_id = response.json()["data"]["id"]
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_locations.py:58: KeyError
+____________________________ test_search_locations _____________________________
+
+    def test_search_locations():
+        # Create a location
+        payload = create_location_payload("Searchable City")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       location_id = response.json()["data"]["id"]
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_locations.py:73: KeyError
+___________________ test_link_and_unlink_person_to_location ____________________
+
+    def test_link_and_unlink_person_to_location():
+        # Create location
+        location_resp = client.post(API_PREFIX + "/", json=create_location_payload("LinkCity"))
+>       location_id = location_resp.json()["data"]["id"]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_locations.py:86: KeyError
+__________________________ test_get_popular_locations __________________________
+
+    def test_get_popular_locations():
+        # Create location and person
+        location_resp = client.post(API_PREFIX + "/", json=create_location_payload("PopularCity"))
+>       location_id = location_resp.json()["data"]["id"]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_locations.py:109: KeyError
+______________________________ test_create_topic _______________________________
+
+    def test_create_topic():
+        payload = create_topic_payload()
+        response = client.post(API_PREFIX + "/", json=payload)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+backend/api/tests/test_topics.py:16: AssertionError
+_______________________________ test_crud_topic ________________________________
+
+    def test_crud_topic():
+        # Create
+        payload = create_topic_payload("CRUD Topic")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       assert response.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+backend/api/tests/test_topics.py:34: AssertionError
+_______________________________ test_list_topics _______________________________
+
+    def test_list_topics():
+        # Create a topic
+        payload = create_topic_payload("List Topic")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       topic_id = response.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_topics.py:58: KeyError
+______________________________ test_search_topics ______________________________
+
+    def test_search_topics():
+        # Create a topic
+        payload = create_topic_payload("Searchable Topic")
+        response = client.post(API_PREFIX + "/", json=payload)
+>       topic_id = response.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_topics.py:73: KeyError
+_____________________ test_link_and_unlink_person_to_topic _____________________
+
+    def test_link_and_unlink_person_to_topic():
+        # Create topic
+        topic_resp = client.post(API_PREFIX + "/", json=create_topic_payload("LinkTest"))
+>       topic_id = topic_resp.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_topics.py:86: KeyError
+___________________________ test_get_popular_topics ____________________________
+
+    def test_get_popular_topics():
+        # Create topics and people
+        topic_resp = client.post(API_PREFIX + "/", json=create_topic_payload("PopularTopic"))
+>       topic_id = topic_resp.json()["data"]["id"]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'data'
+
+backend/api/tests/test_topics.py:109: KeyError
+=============================== warnings summary ===============================
+../../../miniconda3/envs/brainpong/lib/python3.12/site-packages/pydantic/fields.py:1093: 30 warnings
+  /Users/weavejul/miniconda3/envs/brainpong/lib/python3.12/site-packages/pydantic/fields.py:1093: PydanticDeprecatedSince20: Using extra keyword arguments on `Field` is deprecated and will be removed. Use `json_schema_extra` instead. (Extra keys: 'env'). Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warn(
+
+../../../miniconda3/envs/brainpong/lib/python3.12/site-packages/pydantic/_internal/_config.py:323
+  /Users/weavejul/miniconda3/envs/brainpong/lib/python3.12/site-packages/pydantic/_internal/_config.py:323: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.11/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED backend/api/tests/test_events.py::test_create_event - assert 404 == 200
+FAILED backend/api/tests/test_events.py::test_crud_event - assert 404 == 200
+FAILED backend/api/tests/test_events.py::test_list_events - KeyError: 'data'
+FAILED backend/api/tests/test_events.py::test_search_events - KeyError: 'data'
+FAILED backend/api/tests/test_events.py::test_link_and_unlink_person_to_event
+FAILED backend/api/tests/test_events.py::test_get_upcoming_and_recent_events
+FAILED backend/api/tests/test_locations.py::test_create_location - assert 404...
+FAILED backend/api/tests/test_locations.py::test_crud_location - assert 404 =...
+FAILED backend/api/tests/test_locations.py::test_list_locations - KeyError: '...
+FAILED backend/api/tests/test_locations.py::test_search_locations - KeyError:...
+FAILED backend/api/tests/test_locations.py::test_link_and_unlink_person_to_location
+FAILED backend/api/tests/test_locations.py::test_get_popular_locations - KeyE...
+FAILED backend/api/tests/test_topics.py::test_create_topic - assert 404 == 200
+FAILED backend/api/tests/test_topics.py::test_crud_topic - assert 404 == 200
+FAILED backend/api/tests/test_topics.py::test_list_topics - KeyError: 'data'
+FAILED backend/api/tests/test_topics.py::test_search_topics - KeyError: 'data'
+FAILED backend/api/tests/test_topics.py::test_link_and_unlink_person_to_topic
+FAILED backend/api/tests/test_topics.py::test_get_popular_topics - KeyError: ...
+================== 18 failed, 37 passed, 31 warnings in 2.99s ==================

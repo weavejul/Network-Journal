@@ -1,0 +1,79 @@
+{
+  "name": "network-journal",
+  "version": "1.0.0",
+  "description": "A personal intelligence system for mapping and understanding your network",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev:frontend",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend/api && uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend/api && python -m py_compile main.py",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend/api && pytest",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend/api && black . && isort . && flake8 .",
+    "format": "npm run format:frontend && npm run format:backend",
+    "format:frontend": "cd frontend && npm run format",
+    "format:backend": "cd backend/api && black . && isort .",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend/api && pip install -r requirements.txt",
+    "setup": "npm run install:all && npm run setup:db",
+    "setup:db": "cd backend/graph_service && python setup_database.py",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/network-journal.git"
+  },
+  "keywords": [
+    "network",
+    "crm",
+    "graph-database",
+    "ai",
+    "personal-intelligence",
+    "react",
+    "fastapi",
+    "neo4j",
+    "cytoscape",
+    "d3",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@types/d3": "^7.4.3",
+    "cytoscape": "^3.32.0",
+    "cytoscape-avsdf": "^1.0.0",
+    "cytoscape-cola": "^2.5.1",
+    "cytoscape-cose-bilkent": "^4.1.0",
+    "cytoscape-dagre": "^2.5.0",
+    "cytoscape-elk": "^2.3.0",
+    "cytoscape-euler": "^1.2.3",
+    "cytoscape-fcose": "^2.2.0",
+    "cytoscape-klay": "^3.1.4",
+    "cytoscape-layout-utilities": "^1.1.1",
+    "cytoscape-react": "^4.0.0",
+    "cytoscape-spread": "^3.0.0",
+    "d3": "^7.9.0",
+    "graphology": "^0.26.0",
+    "graphology-layout-force": "^0.2.4",
+    "sigma": "^3.0.2"
+  }
+}

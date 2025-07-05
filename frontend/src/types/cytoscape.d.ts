@@ -1,0 +1,6 @@
+declare module 'cytoscape-fcose'
+declare module 'cytoscape-cose-bilkent'
+declare module 'cytoscape-dagre'
+declare module 'cytoscape-klay'
+declare module 'cytoscape-euler'
+declare module 'cytoscape-layout-utilities' 
