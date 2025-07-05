@@ -1,7 +1,7 @@
 # Network Journal
 
 My personal system for mapping, understanding, and leveraging professional
-relationships!
+relationships! Currently a WIP.
 
 ## Architecture Overview
 
